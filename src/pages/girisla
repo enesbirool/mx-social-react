@@ -1,0 +1,9 @@
+<div className="col" style={{width:"5%"}}>
+          <UserSignupPage></UserSignupPage>          
+      </div>
+      <div style={{width:"5%"}}>
+      <LanguageSelector ></LanguageSelector>
+      </div>
+      <div className="col" style={{width:"5%"}}>      
+          <UserSignInPage></UserSignInPage>
+      </div>

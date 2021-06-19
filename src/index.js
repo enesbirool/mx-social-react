@@ -1,17 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import UserSignupPage from './pages/UserSignupPage';
-import UserSignInPage from './pages/UserSignInPage';
 import './bootstrap-override.scss';
-import LanguageSelector from './components/LanguageSelector';
 import reportWebVitals from './reportWebVitals';
 import "./i18n";
+import App from './container/App';
+import {Provider} from "react-redux"
+import configureStore from './redux/configureStore';
 
+//import AuthenticationContext from "./shared/AuthenticationContext"
+
+
+const store=configureStore();
 
 ReactDOM.render(
-<UserSignInPage></UserSignInPage>,
+  <Provider store={store}>
+    <App></App>
+  </Provider>
+  
+,
   document.getElementById('root')
 );
 

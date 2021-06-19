@@ -1,10 +1,10 @@
 import React from 'react';
-import axios from 'axios';
 import { signup} from '../api/apiCalls';
 import Input from '../components/Input';
 import "./Signup.css";
 import {withTranslation} from "react-i18next";
-import LanguageSelector from '../components/LanguageSelector';
+import ButtonWithProgress from '../components/ButtonWithProgress';
+import { withApiProgress } from '../shared/ApiProgress';
 
 class UserSignupPage extends React.Component {
 
@@ -13,7 +13,6 @@ class UserSignupPage extends React.Component {
         displayName: null,
         password: null,
         passwordRepeat: null,
-        pendingApiCall: false,
         errors: {}
 
     };
@@ -23,10 +22,10 @@ class UserSignupPage extends React.Component {
         const { name, value } = event.target;
         const errors={...this.state.error}
         errors[name]=undefined
-        if(name=="password" || name=="passwordRepeat"){
-            if(name == "password" && value != this.state.passwordRepeat){
+        if(name==="password" || name==="passwordRepeat"){
+            if(name === "password" && value !== this.state.passwordRepeat){
                 errors.passwordRepeat=t("Password mismatch");
-            }else if(name== "passwordRepeat" && value != this.state.password){
+            }else if(name=== "passwordRepeat" && value !== this.state.password){
                 errors.passwordRepeat=t("Password mismatch");
             }else{
                 errors.passwordRepeat=undefined;
@@ -48,7 +47,6 @@ class UserSignupPage extends React.Component {
             displayName,
             password
         };
-        this.setState({ pendingApiCall: true });
 
         signup(body)
             .then((response) => {
@@ -57,39 +55,40 @@ class UserSignupPage extends React.Component {
                 if(error.response.data.validationErrors){
                     this.setState({ errors: error.response.data.validationErrors });
                 }
-                this.setState({ pendingApiCall: false });
             });
             
     };
 
 
     render() {
-        const { pendingApiCall,errors } = this.state;
+        const { errors } = this.state;
         const{username,displayName,password,passwordRepeat}=errors;
-        const {t}=this.props;
+        const {t,pendingApiCall}=this.props;
         return (
-            <div class="signup-form">
+            <div className="signup-form">
                 <h1 className="text-center">{t('Sign Up')}</h1>
-                <p class="hint-text">{t("Create your account. It's free and only takes a minute.")}</p>
-                <div class="form-group">
+                <p style={{color:"#818"}} class="hint-text">{t("Create your account. It's free and only takes a minute.")}</p>
+                <div className="form-group">
                     <Input name="username" label={t("Username")} error={username} onChange={this.onChange}/>
                     <Input name="displayName" label={t("Display Name")}  error={displayName} onChange={this.onChange}/>
                     <Input name="password" label={t("Password")}  error={password} onChange={this.onChange} type="password"/>
                     <Input name="passwordRepeat" label={t("RePassword")}  error={passwordRepeat} onChange={this.onChange} type="password"/>
                     <div className="text-center">
-                        <button
-                            className="btn btn-primary"
+                        <ButtonWithProgress
                             onClick={this.onClickSignup}
-                            disabled={pendingApiCall || passwordRepeat!=undefined}
-                        >{pendingApiCall && <span className="spinner-border spinner-border-sm"></span>}{t('Sign Up')}</button>
+                            disabled={pendingApiCall || passwordRepeat!==undefined}
+                            pendingApiCall={pendingApiCall}
+                            text={t('Sign Up')}
+                        />
                     </div>
-                    <LanguageSelector></LanguageSelector>
                 </div>
             </div>
         );
     }
 }
 
-const UserSignupPageWithTranslation=withTranslation()(UserSignupPage);
+
+const UserSignupPageWithApiProgress=withApiProgress(UserSignupPage,'/api/1.0/users')
+const UserSignupPageWithTranslation=withTranslation()(UserSignupPageWithApiProgress);
 
 export default UserSignupPageWithTranslation;

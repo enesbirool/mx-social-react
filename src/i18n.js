@@ -12,8 +12,9 @@ i18n.use(initReactI18next).init({
                 "Display Name":"Display Name",
                 "Password":"Password",
                 "REPasword":"REPassword",
-                "Sign In":"Sign In",
-                "Please Sign In":"Please Sign In"
+                "Please Sign In":"Please Sign In",
+                "Login":"Login",
+                "Logout":"Logout"
             }
         },
         tr:{
@@ -25,12 +26,13 @@ i18n.use(initReactI18next).init({
                 "Display Name":"Tercih Edilen İsim",
                 "Password":"Şifre",
                 "REPasword":"Şifreyi Tekrar Giriniz.",
-                "Sign In":"Giriş",
-                "Please Sign In":"Lütfen Giriş Yapınız"
+                "Please Sign In":"Lütfen Giriş Yapınız",
+                "Login":"Giriş",
+                "Logout":"Çıkış"
             }
         }
     },
-    fallbackLng:"tr",
+    fallbackLng:"en",
     ns:["translations"],
     defaultNS:"translations",
     keySeparator:false,
